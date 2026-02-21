@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { obfuscate } from '../utils/security';
 
 export const LoginForm: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'account' | 'dingtalk'>('account');
@@ -10,14 +11,14 @@ export const LoginForm: React.FC = () => {
           onClick={() => setActiveTab('account')}
           className={`flex-1 py-4 text-sm font-medium transition-colors relative ${activeTab === 'account' ? 'text-gray-800' : 'text-gray-400'}`}
         >
-          Account Login
+          {obfuscate('Account Login')}
           {activeTab === 'account' && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-0.5 bg-gray-800"></div>}
         </button>
         <button 
           onClick={() => setActiveTab('dingtalk')}
           className={`flex-1 py-4 text-sm font-medium transition-colors relative ${activeTab === 'dingtalk' ? 'text-gray-800' : 'text-gray-400'}`}
         >
-          DingTalk Account Login
+          {obfuscate('DingTalk Account Login')}
           {activeTab === 'dingtalk' && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-0.5 bg-gray-800"></div>}
         </button>
       </div>
@@ -52,7 +53,7 @@ export const LoginForm: React.FC = () => {
         </div>
 
         <button className="w-full bg-[#ff4d4f] hover:bg-[#ff7875] text-white py-2.5 rounded font-medium transition-colors text-sm">
-          Sign In
+          {obfuscate('Sign In')}
         </button>
 
         <div className="flex items-start space-x-2 text-[11px] text-gray-400 leading-relaxed">

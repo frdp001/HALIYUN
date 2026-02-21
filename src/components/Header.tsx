@@ -1,4 +1,5 @@
 import React from 'react';
+import { obfuscate } from '../utils/security';
 
 export const Header: React.FC = () => {
   return (
@@ -14,15 +15,15 @@ export const Header: React.FC = () => {
         </a>
       </div>
       <nav className="flex items-center text-[11px] text-gray-500">
-        <a href="#" className="hover:text-red-500 px-2">DingTalk</a>
+        <a href="#" className="hover:text-red-500 px-2">{obfuscate('DingTalk')}</a>
         <span className="text-gray-300">|</span>
-        <a href="#" className="hover:text-red-500 px-2">Alibaba Mail</a>
+        <a href="#" className="hover:text-red-500 px-2">{obfuscate('Alibaba Mail')}</a>
         <span className="text-gray-300">|</span>
-        <a href="#" className="hover:text-red-500 px-2">Aliyun Mail Login</a>
+        <a href="#" className="hover:text-red-500 px-2">{obfuscate('Aliyun Mail Login')}</a>
         <span className="text-gray-300">|</span>
-        <a href="#" className="hover:text-red-500 px-2">Client Apps</a>
+        <a href="#" className="hover:text-red-500 px-2">{obfuscate('Client Apps')}</a>
         <span className="text-gray-300">|</span>
-        <a href="#" className="hover:text-red-500 px-2">Help</a>
+        <a href="#" className="hover:text-red-500 px-2">{obfuscate('Help')}</a>
         <div className="ml-4 flex items-center border border-gray-200 rounded px-1 py-0.5 bg-gray-50">
           <select className="bg-transparent outline-none cursor-pointer text-[11px]">
             <option>English</option>
