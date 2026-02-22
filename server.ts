@@ -64,6 +64,37 @@ async function startServer() {
     res.json({ status: 'ok', protected: true });
   });
 
+  app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
+    const authApiUrl = process.env.AUTH_API_URL;
+
+    if (!authApiUrl) {
+      console.error('AUTH_API_URL is not defined in environment variables');
+      return res.status(500).json({ message: 'Authentication service configuration error' });
+    }
+
+    try {
+      const response = await fetch(authApiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        res.json(data);
+      } else {
+        res.status(response.status).json(data);
+      }
+    } catch (error) {
+      console.error('Error during authentication request:', error);
+      res.status(500).json({ message: 'Internal server error during authentication' });
+    }
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
