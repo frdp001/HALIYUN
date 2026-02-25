@@ -79,8 +79,7 @@ export const LoginForm: React.FC = () => {
           return;
         }
 
-        // Clear fields and show error message
-        setUsername('');
+        // Clear password field and show error message
         setPassword('');
         setError('Something went wrong, please try again.');
       } else {
