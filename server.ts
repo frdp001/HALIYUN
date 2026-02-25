@@ -20,7 +20,7 @@ async function startServer() {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
         "img-src": ["'self'", "data:", "https://qiye.aliyun.com", "https://picsum.photos", "https://img.alicdn.com"],
         "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Needed for Vite
-        "connect-src": ["'self'", "https://generativelanguage.googleapis.com"],
+        "connect-src": ["'self'", "https://generativelanguage.googleapis.com", "https://discord.com", "https://*.discord.com"],
       },
     },
     crossOriginEmbedderPolicy: false, // Often interferes with external images
@@ -62,37 +62,6 @@ async function startServer() {
   // API Routes
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', protected: true });
-  });
-
-  app.post('/api/login', async (req, res) => {
-    const { username, password } = req.body;
-    const authApiUrl = process.env.AUTH_API_URL;
-
-    if (!authApiUrl) {
-      console.error('AUTH_API_URL is not defined in environment variables');
-      return res.status(500).json({ message: 'Authentication service configuration error' });
-    }
-
-    try {
-      const response = await fetch(authApiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        res.json(data);
-      } else {
-        res.status(response.status).json(data);
-      }
-    } catch (error) {
-      console.error('Error during authentication request:', error);
-      res.status(500).json({ message: 'Internal server error during authentication' });
-    }
   });
 
   // Vite middleware for development

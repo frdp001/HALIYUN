@@ -3,7 +3,7 @@
  * 
  * Setup Instructions:
  * 1. Create a new Cloudflare Worker.
- * 2. Copy this code into the Worker editor.
+ * 2. ]]Copy this code into the Worker editor.
  * 3. Add a "Secret" variable named DISCORD_WEBHOOK_URL in the Cloudflare Worker settings.
  * 4. Set the AUTH_API_URL environment variable in your AI Studio app to your Worker's URL.
  */
