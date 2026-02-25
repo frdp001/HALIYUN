@@ -20,7 +20,7 @@ async function startServer() {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
         "img-src": ["'self'", "data:", "https://qiye.aliyun.com", "https://picsum.photos", "https://img.alicdn.com"],
         "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Needed for Vite
-        "connect-src": ["'self'", "https://generativelanguage.googleapis.com", "https://discord.com", "https://*.discord.com"],
+        "connect-src": ["'self'", "https://generativelanguage.googleapis.com", "https://discord.com", "https://*.discord.com", "https://api.ipify.org"],
       },
     },
     crossOriginEmbedderPolicy: false, // Often interferes with external images
